@@ -1,0 +1,384 @@
+C51 COMPILER V9.60.0.0   MAIN                                                              12/01/2023 11:47:36 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\app\keilc\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\ma
+                    -in.lst) TABS(2) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <at89x51.h>
+   2          
+   3          #define COMMONPORTS   P0
+   4          sbit SRCLK = P3^6;
+   5          sbit RCLK = P3^5;
+   6          sbit SER = P3^4;
+   7          int food = 0;
+   8          int ran[20] = {1,0};
+   9          int i,k,duoi=-1,j,l;
+  10          int length_ran = 2;
+  11          int phim;
+  12          int option = 0;
+  13          extern int rand(void);
+  14          unsigned char code TAB2[8]  = {0x7f,0xbf,0xdf,0xef,0xf7,0xfb,0xfd,0xfe};
+  15          unsigned char code CHARCODE[64][8]=
+  16          {
+  17          {0x80,0x00,0x00,0x00,0x00,0x00,0x00,0x00},
+  18          {0x40,0x00,0x00,0x00,0x00,0x00,0x00,0x00},
+  19          {0x20,0x00,0x00,0x00,0x00,0x00,0x00,0x00},
+  20          {0x10,0x00,0x00,0x00,0x00,0x00,0x00,0x00},
+  21          {0x08,0x00,0x00,0x00,0x00,0x00,0x00,0x00},
+  22          {0x04,0x00,0x00,0x00,0x00,0x00,0x00,0x00},
+  23          {0x02,0x00,0x00,0x00,0x00,0x00,0x00,0x00},
+  24          {0x01,0x00,0x00,0x00,0x00,0x00,0x00,0x00},
+  25          {0x00,0x80,0x00,0x00,0x00,0x00,0x00,0x00},
+  26          {0x00,0x40,0x00,0x00,0x00,0x00,0x00,0x00},
+  27          {0x00,0x20,0x00,0x00,0x00,0x00,0x00,0x00},
+  28          {0x00,0x10,0x00,0x00,0x00,0x00,0x00,0x00},
+  29          {0x00,0x08,0x00,0x00,0x00,0x00,0x00,0x00},
+  30          {0x00,0x04,0x00,0x00,0x00,0x00,0x00,0x00},
+  31          {0x00,0x02,0x00,0x00,0x00,0x00,0x00,0x00},
+  32          {0x00,0x01,0x00,0x00,0x00,0x00,0x00,0x00},
+  33          {0x00,0x00,0x80,0x00,0x00,0x00,0x00,0x00},
+  34          {0x00,0x00,0x40,0x00,0x00,0x00,0x00,0x00},
+  35          {0x00,0x00,0x20,0x00,0x00,0x00,0x00,0x00},
+  36          {0x00,0x00,0x10,0x00,0x00,0x00,0x00,0x00},
+  37          {0x00,0x00,0x08,0x00,0x00,0x00,0x00,0x00},
+  38          {0x00,0x00,0x04,0x00,0x00,0x00,0x00,0x00},
+  39          {0x00,0x00,0x02,0x00,0x00,0x00,0x00,0x00},
+  40          {0x00,0x00,0x01,0x00,0x00,0x00,0x00,0x00},
+  41          {0x00,0x00,0x00,0x80,0x00,0x00,0x00,0x00},
+  42          {0x00,0x00,0x00,0x40,0x00,0x00,0x00,0x00},
+  43          {0x00,0x00,0x00,0x20,0x00,0x00,0x00,0x00},
+  44          {0x00,0x00,0x00,0x10,0x00,0x00,0x00,0x00},
+  45          {0x00,0x00,0x00,0x08,0x00,0x00,0x00,0x00},
+  46          {0x00,0x00,0x00,0x04,0x00,0x00,0x00,0x00},
+  47          {0x00,0x00,0x00,0x02,0x00,0x00,0x00,0x00},
+  48          {0x00,0x00,0x00,0x01,0x00,0x00,0x00,0x00},
+  49          {0x00,0x00,0x00,0x00,0x80,0x00,0x00,0x00},
+  50          {0x00,0x00,0x00,0x00,0x40,0x00,0x00,0x00},
+  51          {0x00,0x00,0x00,0x00,0x20,0x00,0x00,0x00},
+  52          {0x00,0x00,0x00,0x00,0x10,0x00,0x00,0x00},
+  53          {0x00,0x00,0x00,0x00,0x08,0x00,0x00,0x00},
+  54          {0x00,0x00,0x00,0x00,0x04,0x00,0x00,0x00},
+C51 COMPILER V9.60.0.0   MAIN                                                              12/01/2023 11:47:36 PAGE 2   
+
+  55          {0x00,0x00,0x00,0x00,0x02,0x00,0x00,0x00},
+  56          {0x00,0x00,0x00,0x00,0x01,0x00,0x00,0x00},
+  57          {0x00,0x00,0x00,0x00,0x00,0x80,0x00,0x00},
+  58          {0x00,0x00,0x00,0x00,0x00,0x40,0x00,0x00},
+  59          {0x00,0x00,0x00,0x00,0x00,0x20,0x00,0x00},
+  60          {0x00,0x00,0x00,0x00,0x00,0x10,0x00,0x00},
+  61          {0x00,0x00,0x00,0x00,0x00,0x08,0x00,0x00},
+  62          {0x00,0x00,0x00,0x00,0x00,0x04,0x00,0x00},
+  63          {0x00,0x00,0x00,0x00,0x00,0x02,0x00,0x00},
+  64          {0x00,0x00,0x00,0x00,0x00,0x01,0x00,0x00},
+  65          {0x00,0x00,0x00,0x00,0x00,0x00,0x80,0x00},
+  66          {0x00,0x00,0x00,0x00,0x00,0x00,0x40,0x00},
+  67          {0x00,0x00,0x00,0x00,0x00,0x00,0x20,0x00},
+  68          {0x00,0x00,0x00,0x00,0x00,0x00,0x10,0x00},
+  69          {0x00,0x00,0x00,0x00,0x00,0x00,0x08,0x00},
+  70          {0x00,0x00,0x00,0x00,0x00,0x00,0x04,0x00},
+  71          {0x00,0x00,0x00,0x00,0x00,0x00,0x02,0x00},
+  72          {0x00,0x00,0x00,0x00,0x00,0x00,0x01,0x00},
+  73          {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x80},
+  74          {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x40},
+  75          {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x20},
+  76          {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x10},
+  77          {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x08},
+  78          {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x04},
+  79          {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x02},
+  80          {0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x01},
+  81          };
+  82          
+  83          int key;
+  84          int keypad[4][4]={{0,1100,1200,1300},
+  85                            {1,2,3,10},
+  86                            {6,5,4,10},
+  87                            {7,8,9,10},
+  88                            };
+  89          
+  90          void delay(int cnt)
+  91          {
+  92   1        while(cnt--)
+  93   1        {}
+  94   1      }
+  95          
+  96          //quet ban phim
+  97          int quetphim()
+  98          {
+  99   1      int c, r;
+ 100   1      P1=0x0F;
+ 101   1      delay(2);
+ 102   1        if(P1!=0x0F)   
+ 103   1        {
+ 104   2          for(r=0;r<4;r++)                    
+ 105   2          {
+ 106   3            P1=~(0x01<<(4+r));
+ 107   3            delay(2);
+ 108   3            for(c=0;c<4;c++)         
+ 109   3            {
+ 110   4              if((P1&(0x01<<c))==0)
+ 111   4              {
+ 112   5                while((P1&(0x01<<c))==0) {};
+ 113   5                  P1=0x0F;
+ 114   5                return keypad[r][3-c]; 
+ 115   5            }
+ 116   4            }
+C51 COMPILER V9.60.0.0   MAIN                                                              12/01/2023 11:47:36 PAGE 3   
+
+ 117   3          }
+ 118   2        }
+ 119   1      P1=0x0F;
+ 120   1        return 1400;
+ 121   1      }
+ 122          
+ 123          
+ 124          void Hc595SendByte(unsigned char dat)
+ 125          {
+ 126   1        unsigned char a;
+ 127   1        SRCLK=0;
+ 128   1        RCLK=0;
+ 129   1        for(a=0;a<8;a++)
+ 130   1        {
+ 131   2          SER=dat>>7;
+ 132   2          dat<<=1;
+ 133   2          
+ 134   2          SRCLK=1;
+ 135   2          delay(2);
+ 136   2          delay(2);
+ 137   2          SRCLK=0;  
+ 138   2        }
+ 139   1      
+ 140   1        RCLK=1;
+ 141   1        delay(2);
+ 142   1        delay(2);
+ 143   1        RCLK=0;
+ 144   1      }
+ 145          
+ 146          void update(int ran[], int length_ran){
+ 147   1        // cap nhat trang thai cua ran
+ 148   1        unsigned int i ;
+ 149   1        for(i= length_ran-1; i>0; i--){
+ 150   2          ran[i] = ran[i-1];
+ 151   2        }
+ 152   1      }
+ 153          
+ 154          // hien thi ran
+ 155          void hienthi(int length_ran, int ran[]){
+ 156   1        unsigned char tab,x_snake;
+ 157   1        unsigned int i,j;
+ 158   1        for(i = 0; i<1; i++){
+ 159   2          for(j = 0; j<length_ran; j++){
+ 160   3            x_snake = ran[j]/8;
+ 161   3            for(tab=0;tab<1;tab++)
+ 162   3            {
+ 163   4              Hc595SendByte(0x00);
+ 164   4              COMMONPORTS = TAB2[x_snake];  
+ 165   4              Hc595SendByte((CHARCODE[ran[j]][x_snake]));
+ 166   4              delay(10);    
+ 167   4            }
+ 168   3          }
+ 169   2        }
+ 170   1      }
+ 171          
+ 172          // hien thi vat can
+ 173          void hienthivatcan(){
+ 174   1        unsigned char tab,x_vatcan;
+ 175   1        unsigned int i;
+ 176   1        x_vatcan = 4;
+ 177   1        for(i = 0; i<3; i++){
+ 178   2            for(tab=0;tab<1;tab++)
+C51 COMPILER V9.60.0.0   MAIN                                                              12/01/2023 11:47:36 PAGE 4   
+
+ 179   2            {
+ 180   3              Hc595SendByte(0x00);
+ 181   3              COMMONPORTS = TAB2[x_vatcan]; 
+ 182   3              Hc595SendByte((CHARCODE[0xff][x_vatcan]));
+ 183   3              delay(3);   
+ 184   3            }
+ 185   2        }
+ 186   1      }
+ 187          
+ 188          //hien thi thuc an
+ 189          void hienthifood(int food){
+ 190   1        unsigned char tab,x_food;
+ 191   1        unsigned int i;
+ 192   1        x_food = food/8;
+ 193   1        for(i = 0; i<3; i++){
+ 194   2            for(tab=0;tab<1;tab++)
+ 195   2            {
+ 196   3              Hc595SendByte(0x00);
+ 197   3              COMMONPORTS = TAB2[x_food]; 
+ 198   3              Hc595SendByte((CHARCODE[food][x_food]));
+ 199   3              delay(3);   
+ 200   3            }
+ 201   2        }
+ 202   1      }
+ 203          
+ 204          int main()
+ 205          {
+ 206   1        food = rand() % 64;
+ 207   1        key = 10;
+ 208   1        
+ 209   1        while (1)
+ 210   1        {
+ 211   2          // chon che do cho game
+ 212   2          if(P3_3 == 0){
+ 213   3            option = 1 ;
+ 214   3            delay(100);
+ 215   3          }
+ 216   2          if (P3_2 == 0){
+ 217   3            option = 0 ;
+ 218   3            delay(100);
+ 219   3          }
+ 220   2          if (P3_0 == 0){
+ 221   3            option = 2 ;
+ 222   3            delay(100);
+ 223   3          }
+ 224   2          duoi = ran[length_ran-1];//gan gia tri duoi
+ 225   2          phim = quetphim();
+ 226   2          if(phim == 2 && key!=6){
+ 227   3            key = 4;
+ 228   3            delay(100);
+ 229   3          }
+ 230   2          if(phim == 8 && key!=4){
+ 231   3            key = 6; 
+ 232   3            delay(100);
+ 233   3          }
+ 234   2          if(phim == 4 && key!=8){
+ 235   3            key = 2;
+ 236   3            delay(100);
+ 237   3          }
+ 238   2          if(phim == 6 && key!=2){
+ 239   3            key = 8; 
+ 240   3            delay(100);
+C51 COMPILER V9.60.0.0   MAIN                                                              12/01/2023 11:47:36 PAGE 5   
+
+ 241   3          }
+ 242   2          
+ 243   2          // cho ran di xuyen tuong hoac dung tuong chet
+ 244   2          if(option==0 || option==2){ //che do di xuyen tuong hoac vat can
+ 245   3            switch (key)
+ 246   3            {
+ 247   4            case 4://xuong
+ 248   4              update(ran,length_ran);
+ 249   4              if((ran[0]+1)%8 == 0) { ran[0] = ran[0]-7; delay(100);}
+ 250   4              else {ran[0]++;delay(100);}
+ 251   4              delay(2);
+ 252   4              break;
+ 253   4            case 6://len
+ 254   4              update(ran,length_ran);
+ 255   4              if(ran[0]%8 == 0) { ran[0] = ran[0]+7; delay(100);}
+ 256   4              else {ran[0]--;delay(100);}
+ 257   4              delay(2);
+ 258   4              break;
+ 259   4            case 2://phai
+ 260   4              update(ran,length_ran);
+ 261   4              if(ran[0]/8 == 7) { ran[0] = ran[0]-56; delay(100);}
+ 262   4              else {ran[0] += 8;delay(100);}
+ 263   4              delay(2);
+ 264   4              break;
+ 265   4            case 8://trai
+ 266   4              update(ran,length_ran);
+ 267   4              if(ran[0]/8 == 0) { ran[0] = ran[0]+56; delay(100);}
+ 268   4              else {ran[0] -= 8;delay(100);}
+ 269   4              delay(2);
+ 270   4              break;
+ 271   4            }
+ 272   3        }
+ 273   2          else if(option==1){// dung tuong thi se ket thuc tro choi
+ 274   3            switch (key)
+ 275   3            {
+ 276   4            case 4://xuong
+ 277   4              update(ran,length_ran);
+ 278   4              if((ran[0]+1)%8 == 0) { return 0;}
+ 279   4              else {ran[0]++;delay(100);}
+ 280   4              delay(2);
+ 281   4              break;
+ 282   4            case 6://len
+ 283   4              update(ran,length_ran);
+ 284   4              if(ran[0]%8 == 0) { return 0;}
+ 285   4              else {ran[0]--;delay(100);}
+ 286   4              delay(2);
+ 287   4              break;
+ 288   4            case 2://phai
+ 289   4              update(ran,length_ran);
+ 290   4              if(ran[0]/8 == 7) { return 0;}
+ 291   4              else {ran[0] += 8;delay(100);}
+ 292   4              delay(2);
+ 293   4              break;
+ 294   4            case 8://trai
+ 295   4              update(ran,length_ran);
+ 296   4              if(ran[0]/8 == 0) { return 0;}
+ 297   4              else {ran[0] -= 8;delay(100);}
+ 298   4              delay(2);
+ 299   4              break;
+ 300   4            }
+ 301   3        }
+ 302   2          //trong che do di xuyen tuong
+C51 COMPILER V9.60.0.0   MAIN                                                              12/01/2023 11:47:36 PAGE 6   
+
+ 303   2          if(option == 2){
+ 304   3            //tao thuc an moi neu nhu thuc an trung voi vi tri
+ 305   3            while(food >= 32 && food <= 39){
+ 306   4              food = rand() % 64;
+ 307   4            }
+ 308   3            //neu ran dung tuong se chet
+ 309   3            if(ran[0] >= 32 && ran[0] <= 39){
+ 310   4              return 0;
+ 311   4            }
+ 312   3          }
+ 313   2          
+ 314   2          // kiem tra xem ran co cham thuc an hay khong
+ 315   2          if (ran[0] == food) {
+ 316   3            // Tang kích thuoc con ran
+ 317   3            length_ran = length_ran + 1;
+ 318   3            //gan duoi con ran
+ 319   3            ran[length_ran-1] = duoi;
+ 320   3            // Tao mot thuc an moi
+ 321   3            food = rand() % 64;
+ 322   3          }
+ 323   2          // kiem tra xem ran co cam vao chinh no hay khong
+ 324   2          for(l = 1; l < length_ran; l++){
+ 325   3            if(ran[0] == ran[l]) {return 0;}
+ 326   3          }
+ 327   2          
+ 328   2          // Hien thi ran
+ 329   2          // kiem tra xem o che do nao de hien thi
+ 330   2          if(option == 2){
+ 331   3            for (k = 0; k < 15; k++){
+ 332   4                hienthi(length_ran,ran); 
+ 333   4                delay(2);
+ 334   4                hienthifood(food);
+ 335   4                delay(2);
+ 336   4                hienthivatcan();
+ 337   4                delay(2);
+ 338   4            }
+ 339   3          }
+ 340   2          else{
+ 341   3            for (k = 0; k < 15; k++){
+ 342   4                hienthi(length_ran,ran); 
+ 343   4                delay(2);
+ 344   4                hienthifood(food);
+ 345   4                delay(2);
+ 346   4            }
+ 347   3          }
+ 348   2          delay(100);
+ 349   2        }
+ 350   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1597    ----
+   CONSTANT SIZE    =    520    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     92      19
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
